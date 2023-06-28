@@ -67,13 +67,13 @@
 // 설정파일 수정
 
 // location / {
-//     # First attempt to serve request as file, then
-//     # as directory, then fall back to displaying a 404.
-//     #try_files $uri $uri/ =404;
+    // # First attempt to serve request as file, then
+    // # as directory, then fall back to displaying a 404.
+    // #try_files $uri $uri/ =404;
 
-//     proxy_set_header HOST $host;
-//     proxy_pass http://127.0.0.1:8080;
-//     proxy_redirect off;
+    // proxy_set_header HOST $host;
+    // proxy_pass http://127.0.0.1:8080;
+    // proxy_redirect off;
 // }
 
 // proxy_set_header 부분은 요청이 들어온 브라우저의 host내용을 넘겨준다는 뜻
@@ -133,7 +133,9 @@
 // nginx관련 certboot 실행
 // sudo certbot --nginx
 
+
 // nginx에 default파일을 수정
+// default파일에 있다!
 // 수정을 한 뒤 server_name 도메인;
 // 다시 home/ubuntu로 돌아가서
 // 문법 오류 확인

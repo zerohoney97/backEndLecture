@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    // 시간을 나타내게 해보자
+    // 로컬 시간
+    const Clock = () => {
+      const _div = document.createElement("div");
+      const _h1 = document.createElement("h1");
+      const _h2 = document.createElement("h2");
+
+      const txt = "시간임";
+      //  컴퓨터 로컬 시간 표기
+      let time = `time:${new Date().toLocaleTimeString()}`;
+      _h1.innerHTML = txt;
+      _h2.innerHTML = time;
+      _div.append(_h1, _h2);
+
+      document.querySelector("#root").innerHTML = _div.innerHTML;
+    };
+    setInterval(Clock, 1000);
+
+  </script>
+</html>

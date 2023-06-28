@@ -27,7 +27,7 @@
 
 // 업데이트
 // sudo apt-get update
-// sudo apt-get install mysql-sever
+// sudo apt-get install mysql-server
 
 // 데이터 베이스 세팅
 // 우리가 사용할 데이터 베이스 하나 만들어보자

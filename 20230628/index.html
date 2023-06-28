@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    // id가 root인 요소 선택
+    const root = document.querySelector("#root");
+    // button create
+    const button = document.createElement("button");
+    button.addEventListener('click',(e)=>{
+        // 버튼 요소를 클릭하면
+        // 해당 이벤트가 발생한 타겟의 내용이 Login 이면
+
+        if (e.target.innerHTML==='Login') {
+            // LogOut변경
+            e.target.innerHTML='LogOut'
+        }else{
+            // Login변경
+            e.target.innerHTML='Login'
+            
+        }
+    })
+    button.innerHTML='<div> 클릭</div>'
+    // 버튼을 아이디가 root인 요소에 내용으로 추가
+    root.appendChild(button)
+
+</script>
+</html>
