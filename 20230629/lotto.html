@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script
+    crossorigin
+    src="https://unpkg.com/react@18/umd/react.development.js"
+  ></script>
+  <script
+    crossorigin
+    src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+  ></script>
+  <!-- React,ReactDOM라이브러리 -->
+  <!-- Babel을 가져와서 JSX 문법을 사용 -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    .lotto-container {
+      width: 1000px;
+      height: 400px;
+      border: 1px solid;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    hr {
+      border: none;
+      border-top: 2px solid blue; /* Adjust size and color as needed */
+      width: 100%;
+    }
+    .lotto-title {
+      width: 100%;
+      height: 70px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .microsoft-button {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 4px;
+      background-color: #0078d4;
+      background-image: linear-gradient(to bottom, #0092d0, #0065ac);
+      color: #fff;
+      font-family: Segoe UI, Arial, sans-serif;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .microsoft-button:hover {
+      background-color: #005a96;
+    }
+
+    .microsoft-button:active {
+      background-color: #004f84;
+    }
+
+    .lotto-ball-container {
+      width: 100%;
+      height: 190px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .lotto-ball {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .blue {
+      background-color: rgba(0, 0, 255, 0.5);
+    }
+
+    .red {
+      background-color: rgba(255, 0, 0, 0.5);
+    }
+
+    .green {
+      background-color: rgba(0, 128, 0, 0.5);
+    }
+
+    .lotto-footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script type="text/babel">
+    // 로또 전체를 감싸는 컨테이너
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          lottoArr: [],
+        };
+        this.changeLottoNumArr = this.changeLottoNumArr.bind(this);
+      }
+
+      componentDidUpdate() {
+        if (this.state.lottoArr.length > 6) {
+          alert("6개가 됐습니다! 다시 하세요");
+          location.reload();
+        }
+      }
+
+      changeLottoNumArr() {
+        this.setState({
+          lottoArr: [
+            ...this.state.lottoArr,
+            Math.floor(Math.random() * 46) + 1,
+          ],
+        });
+        console.log(this.state.lottoArr);
+      }
+
+      render() {
+        return (
+          <>
+            <div className="lotto-container">
+              <LottoTitleWithBtn changeLottoNumArr={this.changeLottoNumArr} />
+              <LottoBallBox lottoArr={this.state.lottoArr} />
+              <LottoFooter lottoArr={this.state.lottoArr} />
+            </div>
+          </>
+        );
+      }
+    }
+
+    // 로또의 타이틀과 버튼이 있음
+    class LottoTitleWithBtn extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return (
+          <>
+            <div className="lotto-title">
+              <h2>로또 추첨</h2>
+              <button
+                className="microsoft-button"
+                onClick={() => {
+                  this.props.changeLottoNumArr();
+                }}
+              >
+                추첨하기
+              </button>
+            </div>
+            <hr />
+          </>
+        );
+      }
+    }
+
+    // 나온 로또 볼들을 보관하는 박스
+
+    class LottoBallBox extends React.Component {
+      constructor(props) {
+        super(props);
+        console.log(this.props);
+      }
+
+      render() {
+        return (
+          <>
+            <div className="lotto-ball-container">
+              {
+                // 들어간 볼을 출력
+                this.props.lottoArr.map((a) => {
+                  switch (a % 3) {
+                    case 0:
+                      return <LottoBallBlue lottoNum={a} />;
+                    case 1:
+                      return <LottoBallGreen lottoNum={a} />;
+                    case 2:
+                      return <LottoBallRed lottoNum={a} />;
+                  }
+                })
+              }
+            </div>
+            <hr />
+          </>
+        );
+      }
+    }
+
+    // 로또 볼 하나를 만드는 클래스
+    class LottoBallBlue extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return <div className="lotto-ball blue">{this.props.lottoNum}</div>;
+      }
+    }
+    // 로또 볼 하나를 만드는 클래스
+    class LottoBallGreen extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return <div className="lotto-ball green">{this.props.lottoNum}</div>;
+      }
+    }
+    // 로또 볼 하나를 만드는 클래스
+    class LottoBallRed extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return <div className="lotto-ball red">{this.props.lottoNum}</div>;
+      }
+    }
+
+    // 맨 밑, 현재 나온 로또를 알려주는 클래스
+
+    class LottoFooter extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return (
+          <div className="lotto-footer">
+            <h1>
+              현재 로또 번호:
+              <span>{this.props.lottoArr[this.props.lottoArr.length - 1]}</span>
+            </h1>
+          </div>
+        );
+      }
+    }
+
+    const root = ReactDOM.createRoot(document.querySelector("#root"));
+    root.render(<App />);
+  </script>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script
+    crossorigin
+    src="https://unpkg.com/react@18/umd/react.development.js"
+  ></script>
+  <script
+    crossorigin
+    src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+  ></script>
+  <!-- React,ReactDOM라이브러리 -->
+  <!-- Babel을 가져와서 JSX 문법을 사용 -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <body>
+    <!-- 리액트 게시판 -->
+    <div id="root"></div>
+  </body>
+  <script type="text/babel">
+    // 댓글이 될 컴포넌트
+    // props 값을 받아서 댓글을 만들어줄 컴포넌트
+    class CommentItem extends React.Component {
+      constructor(props) {
+        super(props);
+        // props={userId:'작성자',content:'내용',date:'날짜'}
+      }
+      render() {
+        return (
+          <ul>
+            <li>{this.props.userId}</li>
+            <li>{this.props.content}</li>
+            <li>{this.props.date}</li>
+          </ul>
+        );
+      }
+    }
+
+    // 댓글 작성 form을 그리는 컴포넌트
+    class CommentForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          // form에서 보낼값
+          // input에 입력값을 상태값으로 넣어줄거임
+          value: "",
+        };
+        this.chageHandler = this.chageHandler.bind(this);
+        this.submitHandler = this.submitHandler.bind(this);
+      }
+      //   입력값을 처리할 함수
+      chageHandler(e) {
+        // input의 value를 구조분해 할당
+        const { value } = e.target;
+        this.setState({
+          ...this.state,
+          value,
+        });
+      }
+      //   입력을 했으면 입력을 처리할 함수
+      submitHandler(e) {
+        // 새로고침 이벤트 막기
+        e.preventDefault();
+        this.props.create(this.state.value);
+        // 댓글 작성 후 초기화
+        this.setState({ value: "" });
+      }
+      render() {
+        return (
+          <li>
+            <form onSubmit={this.submitHandler}>
+              <h4>
+                댓글 작성 <span>:{this.props.length}</span>
+              </h4>
+              <span>
+                <input
+                  type="text"
+                  onChange={this.chageHandler}
+                  value={this.state.value}
+                />
+                <input type="submit" value="등록" />
+              </span>
+            </form>
+          </li>
+        );
+      }
+    }
+    // 댓글의 리스트들을 그려주는 컴포넌트
+    class CommentList extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      loop(value, index) {
+        return (
+          // key는 react가 요소를 식별할 때=>성능 좋아짐
+          <CommentItem
+            key={index}
+            userId={value.userId}
+            content={value.content}
+            date={value.date}
+          />
+        );
+      }
+
+      render() {
+        return <li>{this.props.items.map(this.loop)}</li>;
+      }
+    }
+    // 댓글 기능을 담당할 컴포넌트
+    class Comment extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          comment: [
+            {
+              userId: "mumu",
+              content: "hi",
+              date: "2023-06-29",
+            },
+            { userId: "zero", content: "hello", date: "2023-06-30" },
+          ],
+        };
+        this.create = this.create.bind(this);
+      }
+
+      create(content) {
+        // 컴텍스트가 유지될수 있게 바인드 사용
+        this.setState({
+          comment: [
+            { userId: "mumu", content, date: "2023-06-31" },
+            ...this.state.comment,
+          ],
+        });
+      }
+      render() {
+        return (
+          <ul>
+            {/*댓글 작성폼*/}
+            <CommentForm
+              create={this.create}
+              length={this.state.comment.length}
+            />
+            {/*댓글 리스트를 보여줄 곳*/}
+            <CommentList items={this.state.comment} />
+          </ul>
+        );
+      }
+    }
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        return (
+          <div>
+            {/* 댓글 레이아웃 컴포넌트 가져옴*/}
+            <Comment />
+          </div>
+        );
+      }
+    }
+    const root = ReactDOM.createRoot(document.querySelector("#root"));
+    root.render(<App/>);
+
+    // 로또 추첨기 
+    // 예쁘게
+    // 상태관리 하는거 props 속성값 관리
+    // 컴포넌트 최소 단위까지 쪼개기
+  </script>
+</html>
