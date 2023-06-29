@@ -121,12 +121,16 @@
       }
 
       changeLottoNumArr() {
-        this.setState({
-          lottoArr: [
-            ...this.state.lottoArr,
-            Math.floor(Math.random() * 46) + 1,
-          ],
-        });
+        let tempNum = Math.floor(Math.random() * 46) + 1;
+        if (this.state.lottoArr.indexOf(tempNum) == -1) {
+          this.setState({
+            lottoArr: [...this.state.lottoArr, tempNum],
+          });
+        } else {
+          this.changeLottoNumArr();
+          console.log("중복됨");
+        }
+
         console.log(this.state.lottoArr);
       }
 
