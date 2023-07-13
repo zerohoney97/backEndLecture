@@ -1,4 +1,3 @@
-const dot=require('dotenv').config()
 console.log(process.env.DATABASE_USERNAME)
 const config = {
     dev: {
