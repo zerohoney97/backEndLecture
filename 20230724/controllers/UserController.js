@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 exports.CreateUser = async (req, res) => {
   try {
     const { id, pw, nickName } = req.body;
+    console.log(req.body)
     const hashPw = bcrypt.hashSync(pw, 10);
 
     const user = await User.findOne({ where: { user_id: id } });
